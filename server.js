@@ -32,14 +32,12 @@ app.use(express.json());
 
 // Routes
 
-app.use("/api", require("./routes/createCommentRoute"));
-app.use("/api", require("./routes/getCommentsRoute"));
-app.use("/api", require("./routes/getAllComments"));
+app.use("/api", require("./routes/tradingOrder"));
 
 mongoose
-  .connect("mongodb+srv://admin:Pass.321@blogcomments.qbjvpgx.mongodb.net", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  .connect(`mongodb+srv://admin:Pass.321@incash.jqg6zra.mongodb.net`, {
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Connected to MongoDB successfully!");
