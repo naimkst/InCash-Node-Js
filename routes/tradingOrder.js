@@ -1,15 +1,10 @@
 const express = require("express");
 const tradingOrderController = require("../controllers/tradingOrder");
-const {
-  getComments,
-  updateComment,
-  deleteComment,
-} = require("../controllers/tradingOrder");
 
 const router = express.Router();
 
-router.get("/", tradingOrderController.getAll);
-router.post("/create", tradingOrderController.update);
-router.put("/update", tradingOrderController.remove);
+router.get("/trading-orders", tradingOrderController.getAll);
+router.post("/create", tradingOrderController.orderStore);
+router.put("/update", tradingOrderController.update);
 
 module.exports = router;

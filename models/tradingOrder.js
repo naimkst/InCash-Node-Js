@@ -1,6 +1,6 @@
 const { mongoose } = require("mongoose");
 
-const tradingOrder = new mongoose.Schema(
+const TradingOrder = new mongoose.Schema(
   {
     p_type: {
       type: String,
@@ -17,9 +17,10 @@ const tradingOrder = new mongoose.Schema(
     requested_at: {
       type: String,
     },
-    started_at: { type: Date, default: Date.now },
+    started_at: { type: String, default: Date.now },
     execute_at: {
       type: String,
+      nullable: true,
     },
     interval: {
       type: String,
@@ -49,4 +50,4 @@ const tradingOrder = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("tradingOrder", tradingOrder);
+module.exports = mongoose.model("TradingOrder", TradingOrder);
