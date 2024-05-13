@@ -33,6 +33,7 @@ const TradingOrder = new mongoose.Schema(
     },
     end_ohlc_data: {
       type: String,
+      nullable: true,
     },
     p_result: {
       type: String,

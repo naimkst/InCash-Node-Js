@@ -18,26 +18,67 @@ const orderStore = async (req, res) => {
   } = req.body;
 
   try {
-    if (amount == "") {
+    if (user_wallet_id == "") {
       res.status(400).json({
-        error: "Invest Amount Field is require!",
-      });
-    }
-
-    if (interval == "") {
-      res.status(400).json({
-        error: "Time Field is require!",
-      });
-    }
-    if (p_type == "") {
-      res.status(400).json({
-        error: "Action Type Field is require!",
+        error: "user_wallet_id Field is require!",
       });
     }
 
     if (symbol == "") {
       res.status(400).json({
-        error: "Symbol Field is require!",
+        error: "symbol Field is require!",
+      });
+    }
+    if (started_at == "") {
+      res.status(400).json({
+        error: "started_at Field is require!",
+      });
+    }
+
+    if (execute_at == "") {
+      res.status(400).json({
+        error: "execute_at Field is require!",
+      });
+    }
+
+    if (interval == "") {
+      res.status(400).json({
+        error: "interval Field is require!",
+      });
+    }
+    if (win_amount == "") {
+      res.status(400).json({
+        error: "win_amount Field is require!",
+      });
+    }
+    if (status == "") {
+      res.status(400).json({
+        error: "status Field is require!",
+      });
+    }
+    if (start_ohlc_data == "") {
+      res.status(400).json({
+        error: "start_ohlc_data Field is require!",
+      });
+    }
+    if (created_at == "") {
+      res.status(400).json({
+        error: "created_at Field is require!",
+      });
+    }
+    if (timezone == "") {
+      res.status(400).json({
+        error: "timezone Field is require!",
+      });
+    }
+    if (requested_at == "") {
+      res.status(400).json({
+        error: "requested_at Field is require!",
+      });
+    }
+    if (p_type == "") {
+      res.status(400).json({
+        error: "p_type Field is require!",
       });
     }
 
@@ -103,50 +144,27 @@ const update = async (req, res) => {
     win_amount,
     status,
     start_ohlc_data,
+    end_ohlc_data,
+    p_result,
     created_at,
     timezone,
     requested_at,
     p_type,
+    _id,
   } = req.body;
 
   try {
-    if (
-      (user_wallet_id == "" || symbol == "",
-      amount == "",
-      interval == "",
-      p_type == "",
-      status == "",
-      start_ohlc_data == "",
-      created_at == "",
-      timezone == "",
-      requested_at == "",
-      p_type == "",
-      win_amount == "",
-      execute_at == "",
-      started_at == "")
-    ) {
+    if (_id == "") {
       return res.status(400).json({
         error: "Oops, something is wrong!",
       });
     }
 
     const result = await TradingOrder.findOneAndUpdate(
-      { _id: id },
+      { _id: _id },
       {
         $set: {
-          user_wallet_id,
-          symbol,
-          started_at,
-          execute_at,
-          interval,
-          amount,
-          win_amount,
-          status,
-          start_ohlc_data,
-          created_at,
-          timezone,
-          requested_at,
-          p_type,
+          ...req.body,
         },
       },
       { new: true }
