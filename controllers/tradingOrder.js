@@ -123,7 +123,6 @@ const orderResult = async (req, res) => {
     const result = await TradingOrder.find({
       user_wallet_id: user_wallet_id,
     });
-
     res.status(201).json({ data: result });
   } catch (error) {
     console.log(error);
