@@ -111,26 +111,92 @@ const orderStore = async (req, res) => {
 };
 
 const orderResult = async (req, res) => {
-  const { user_wallet_id } = req.body;
+  const {
+    user_wallet_id,
+    order_id,
+    start_date,
+    end_date,
+    status,
+    p_type,
+    symbol,
+    limit,
+    sort_order,
+  } = req.body;
 
   try {
-    if (user_wallet_id == "") {
-      res.status(400).json({
-        error: "Opps something is wrong!",
+    if (!user_wallet_id) {
+      return res.status(400).json({
+        error: "Oops, something is wrong!",
       });
     }
 
-    const result = await TradingOrder.find({
-      user_wallet_id: user_wallet_id,
-    });
-    res.status(201).json({ data: result });
+    let query = { user_wallet_id };
+
+    if (order_id) {
+      query._id = order_id;
+    }
+
+    if (start_date && end_date) {
+      query.created_at = {
+        $gte: new Date(start_date),
+        $lte: new Date(end_date),
+      };
+    }
+
+    if (status) {
+      query.status = status;
+    }
+
+    if (p_type) {
+      query.p_type = p_type;
+    }
+
+    if (symbol) {
+      query.symbol = symbol;
+    }
+
+    let options = {};
+    if (limit) {
+      options.limit = parseInt(limit, 10);
+    }
+
+    if (sort_order) {
+      options.sort = {
+        created_at: sort_order.toLowerCase() === "asc" ? 1 : -1,
+      };
+    }
+
+    const result = await TradingOrder.find(query, null, options);
+    res.status(200).json({ data: result });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: error,
+      message: error.message,
     });
   }
 };
+
+// const orderResult = async (req, res) => {
+//   const { user_wallet_id } = req.body;
+
+//   try {
+//     if (user_wallet_id == "") {
+//       res.status(400).json({
+//         error: "Opps something is wrong!",
+//       });
+//     }
+
+//     const result = await TradingOrder.find({
+//       user_wallet_id: user_wallet_id,
+//     });
+//     res.status(201).json({ data: result });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       message: error,
+//     });
+//   }
+// };
 
 const update = async (req, res) => {
   const {
