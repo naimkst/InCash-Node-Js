@@ -122,7 +122,8 @@ const orderResult = async (req, res) => {
     limit,
     sort_order,
     _id, // New filter parameter
-  } = req.body;
+    page, // Page number for pagination
+  } = req.query;
 
   try {
     if (!user_wallet_id) {
@@ -161,9 +162,13 @@ const orderResult = async (req, res) => {
     }
 
     let options = {};
-    if (limit) {
-      options.limit = parseInt(limit, 10);
-    }
+
+    const parsedLimit = parseInt(limit, 10) || 10; // Default limit to 10 if not provided
+    const parsedPage = parseInt(page, 10) || 1; // Default page to 1 if not provided
+    const skip = (parsedPage - 1) * parsedLimit;
+
+    options.limit = parsedLimit;
+    options.skip = skip;
 
     if (sort_order) {
       const sortDirection =
@@ -173,7 +178,7 @@ const orderResult = async (req, res) => {
           ? -1
           : null;
       if (sortDirection !== null) {
-        options.sort = { created_at: sortDirection };
+        options.sort = { createdAt: sortDirection };
       } else {
         return res.status(400).json({
           error: "Invalid sort order. Use 'asc' or 'desc'.",
