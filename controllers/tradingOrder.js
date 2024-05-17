@@ -121,6 +121,7 @@ const orderResult = async (req, res) => {
     symbol,
     limit,
     sort_order,
+    _id,
   } = req.body;
 
   try {
@@ -153,6 +154,9 @@ const orderResult = async (req, res) => {
 
     if (symbol) {
       query.symbol = symbol;
+    }
+    if (_id) {
+      query._id = _id;
     }
 
     let options = {};
