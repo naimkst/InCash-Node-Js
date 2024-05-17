@@ -121,7 +121,7 @@ const orderResult = async (req, res) => {
     symbol,
     limit,
     sort_order,
-    _id,
+    _id, // New filter parameter
   } = req.body;
 
   try {
@@ -155,6 +155,7 @@ const orderResult = async (req, res) => {
     if (symbol) {
       query.symbol = symbol;
     }
+
     if (_id) {
       query._id = _id;
     }
@@ -165,9 +166,19 @@ const orderResult = async (req, res) => {
     }
 
     if (sort_order) {
-      options.sort = {
-        created_at: sort_order.toLowerCase() === "asc" ? 1 : -1,
-      };
+      const sortDirection =
+        sort_order.toLowerCase() === "asc"
+          ? 1
+          : sort_order.toLowerCase() === "desc"
+          ? -1
+          : null;
+      if (sortDirection !== null) {
+        options.sort = { created_at: sortDirection };
+      } else {
+        return res.status(400).json({
+          error: "Invalid sort order. Use 'asc' or 'desc'.",
+        });
+      }
     }
 
     const result = await TradingOrder.find(query, null, options);
